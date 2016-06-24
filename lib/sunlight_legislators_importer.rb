@@ -3,13 +3,18 @@ require 'csv'
 class SunlightLegislatorsImporter
   def self.import(filename)
     csv = CSV.new(File.open(filename), :headers => true)
+
     csv.each do |row|
+      hash = Hash.new
       row.each do |field, value|
-        # TODO: begin
-        raise NotImplementedError, "TODO: figure out what to do with this row and do it!"
-        # TODO: end
-      end
-    end
+        if Legislator.column_names.include?(field)
+          hash[field] = value # skip if field is not in column names
+          p hash
+        end #end if
+      end #end row iteration
+      # hash = {firstname: 'dasd', lastname: 'dasdas', in_office: 'dasd', ... ..... .... ..}
+      Legislator.create(hash)
+    end #end loop
   end
 end
 
